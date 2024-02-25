@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Color Changer</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+
+  div {
+    margin-bottom: 10px;
+  }
+
+  label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  input[type="range"] {
+    width: 200px;
+  }
+
+  #textContainer {
+    margin-top: 20px;
+  }
+
+  #displayText {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 0;
+  }
+</style>
+</head>
+<body>
+
+<div>
+    <label for="redRange">Red:</label>
+    <input id="redRange" type="range" min="0" max="255" value="0">
+</div>
+<div>
+    <label for="greenRange">Green:</label>
+    <input id="greenRange" type="range" min="0" max="255" value="0">
+</div>
+<div>
+    <label for="blueRange">Blue:</label>
+    <input id="blueRange" type="range" min="0" max="255" value="0">
+</div>
+
+<div id="textContainer">
+    <p id="displayText">Change me according to the color</p>
+</div>
+
+<script>
+const redRange = document.getElementById('redRange');
+const greenRange = document.getElementById('greenRange');
+const blueRange = document.getElementById('blueRange');
+const displayText = document.getElementById('displayText');
+
+function updateTextColor() {
+    const redValue = redRange.value;
+    const greenValue = greenRange.value;
+    const blueValue = blueRange.value;
+    const color = `rgb(${redValue}, ${greenValue}, ${blueValue})`;
+    displayText.style.color = color;
+}
+
+redRange.addEventListener('input', updateTextColor);
+greenRange.addEventListener('input', updateTextColor);
+blueRange.addEventListener('input', updateTextColor);
+
+// Initial update
+updateTextColor();
+</script>
+
+</body>
+</html>

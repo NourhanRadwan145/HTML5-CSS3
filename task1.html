@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Player</title>
+<style>
+  #videoContainer {
+    position: relative;
+    width: 640px; 
+  }
+  #myVideo {
+    width: 100%;
+  }
+  #progressContainer {
+    display: inline-block;
+    width: 35%;
+    margin-top: 10px; 
+  }
+  #progressRange {
+    width: 100%;
+  }
+  #timeContainer {
+    display: inline-block;
+    width: 28%;
+    text-align: left;
+    margin-top: 10px; 
+  }
+ 
+  #volumeRange {
+    width: 80px; 
+  }
+</style>
+</head>
+<body>
+
+<div id="videoContainer">
+  <video id="myVideo" width="640" height="360">
+    <source src="1.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<div id="progressContainer">
+    <input id="progressRange" type="range" min="0" max="100" step="0.1" value="0">
+</div>
+
+<div id="timeContainer">
+    <span id="currentTime">0:00</span> / <span id="totalDuration">0:00</span>
+</div>
+
+<br>
+
+<div>
+    
+    <button id="startButton">Start</button>
+    <button id="stopButton">Stop</button>
+    <button id="fastBackwardButton">&lt;&lt;</button>
+    <button id="backwardButton">&lt;</button>
+    <button id="forwardButton">&gt;</button>
+    <button id="fastForwardButton">&gt;&gt;</button>
+    <label>Volume</label>
+    <input id="volumeRange" type="range" min="0" max="1" step="0.01" value="1">
+    <button id="muteButton">Mute</button>
+    <br>
+    <label>Speed</label>
+    <input id="speedRange" type="range" min="0.5" max="2" step="0.1" value="1">
+    
+    
+</div>
+
+<script>
+  const video = document.getElementById("myVideo");
+  const startButton = document.getElementById("startButton");
+  const stopButton = document.getElementById("stopButton");
+  const muteButton = document.getElementById("muteButton");
+  const speedRange = document.getElementById("speedRange");
+  const backwardButton = document.getElementById("backwardButton");
+  const forwardButton = document.getElementById("forwardButton");
+  const fastBackwardButton = document.getElementById("fastBackwardButton");
+  const fastForwardButton = document.getElementById("fastForwardButton");
+  const currentTimeSpan = document.getElementById("currentTime");
+  const totalDurationSpan = document.getElementById("totalDuration");
+  const progressRange = document.getElementById("progressRange");
+  const volumeRange = document.getElementById("volumeRange");
+
+  startButton.addEventListener("click", function() {
+    video.play();
+  });
+
+  stopButton.addEventListener("click", function() {
+    video.pause();
+    video.currentTime = 0;
+  });
+
+  muteButton.addEventListener("click", function() {
+    video.muted = !video.muted;
+    muteButton.innerText = video.muted ? "Unmute" : "Mute";
+  });
+
+  speedRange.addEventListener("input", function() {
+    video.playbackRate = speedRange.value;
+  });
+
+  backwardButton.addEventListener("click", function() {
+    video.currentTime -= 10; // Go back 10 seconds
+  });
+
+  forwardButton.addEventListener("click", function() {
+    video.currentTime += 10; // Go forward 10 seconds
+  });
+
+  fastBackwardButton.addEventListener("click", function() {
+    video.currentTime -= 30; // Go back 30 seconds
+  });
+
+  fastForwardButton.addEventListener("click", function() {
+    video.currentTime += 30; // Go forward 30 seconds
+  });
+
+  video.addEventListener("timeupdate", function() {
+    // Update current time
+    const currentTime = formatTime(video.currentTime);
+    currentTimeSpan.textContent = currentTime;
+
+    // Update total duration
+    const totalDuration = formatTime(video.duration);
+    totalDurationSpan.textContent = totalDuration;
+
+    // Update progress range
+    const progress = (video.currentTime / video.duration) * 100;
+    progressRange.value = progress;
+  });
+
+  progressRange.addEventListener("input", function() {
+    const progressTime = (progressRange.value / 100) * video.duration;
+    video.currentTime = progressTime;
+  });
+
+  volumeRange.addEventListener("input", function() {
+    video.volume = volumeRange.value;
+  });
+
+  // Format time as mm:ss
+  function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  }
+</script>
+
+</body>
+</html>
